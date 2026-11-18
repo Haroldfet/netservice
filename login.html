@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Iniciar sesión - NetService Pro</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="login">
+<div class="login">
+  <div>
+    <a href="index.html" style="color:#bae6fd;display:block;margin-bottom:10px">← Volver al inicio</a>
+    <!-- LOGO Y TÍTULO -->
+    <div class="logo">📶</div>
+    <h1>NetService Pro</h1>
+    <small style="color:#38bdf8">Sistema de Gestión de Servicio de Internet</small>
+    <!-- FORMULARIO DE LOGIN -->
+    <form class="box" id="loginForm">
+      <!-- Pestañas Cliente / Administrador -->
+      <div class="tabs"><button type="button" class="on" data-rol="cliente">Cliente</button><button type="button" data-rol="admin">Administrador</button><button type="button" data-rol="empleado">Empleado</button></div>
+      <label>Correo electrónico<input type="email" id="email" placeholder="usuario@netservice.com" required></label>
+      <label><span style="display:flex;justify-content:space-between">Contraseña <a href="recuperar.html" id="olvido" style="font-weight:400">¿Olvidaste tu contraseña?</a></span><input type="password" id="pass" placeholder="••••••••" required></label>
+      <button class="btn full" style="margin-top:16px">Iniciar sesión →</button>
+      <hr style="border:0;border-top:1px solid var(--bd);margin:16px 0">
+      <p style="text-align:center;color:var(--gr)">¿No tienes una cuenta? <a href="registro.html" id="crear">Crear cuenta</a></p>
+    </form>
+    <span class="sec">🛡 Acceso seguro con autenticación institucional</span>
+  </div>
+</div>
+<div id="modal" class="modal"></div><div id="toast"></div>
+<script src="js/app.js"></script>
+</body>
+</html>

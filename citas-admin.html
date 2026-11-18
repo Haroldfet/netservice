@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Citas de Mantenimiento - NetService Pro</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="citas-admin" data-rol="admin">
+<!-- BARRA SUPERIOR (la genera js/app.js) -->
+<header id="topbar"></header>
+<!-- CONTENIDO PRINCIPAL -->
+<main class="wrap">
+<!-- ESTADÍSTICAS -->
+<section class="grid g5" id="stats"></section>
+<!-- FILTROS -->
+<div class="filters"><input id="q" placeholder="Buscar por ID, cliente, equipo..."><select id="fe"></select><small id="cnt"></small></div>
+<!-- LISTA DE CITAS (clic para ver detalle) -->
+<section id="lista"></section>
+</main>
+<!-- VENTANA MODAL (formularios) -->
+<div id="modal" class="modal"></div>
+<!-- AVISO EMERGENTE -->
+<div id="toast"></div>
+<script src="js/app.js"></script>
+<!-- REPORTE DEL EMPLEADO (vista admin) -->
+<link rel="stylesheet" href="css/reporte-visita.css">
+<script src="js/reporte-visita.js"></script>
+</body>
+</html>

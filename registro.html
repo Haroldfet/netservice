@@ -1,0 +1,19 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/auth.css"><title>Crear cuenta - NetService Pro</title></head>
+<body data-page="registro">
+<div class="auth">
+  <!-- PANEL IZQUIERDO -->
+  <aside class="panel"><div class="logo">📶</div><h2>Crea tu cuenta en NetService Pro</h2><p>Gestiona tus visitas técnicas desde un solo lugar.</p>
+    <ul><li>📅 Agenda y sigue tus citas</li><li>🔧 Reporta problemas de tu red</li><li>✅ Consulta si el error fue resuelto</li></ul><a href="index.html" style="color:#7dd3fc">← Volver al inicio</a></aside>
+  <!-- FORMULARIO -->
+  <section class="fside"><form class="fbox" id="reg">
+    <h1>Registrarse</h1><small>Elige el tipo de cuenta y completa tus datos</small>
+    <div class="roles"><div class="on" data-r="cliente">👤 Cliente</div><div data-r="empleado">🛠 Empleado</div></div>
+    <label>Nombre completo<input id="nom" required placeholder="Tu nombre"></label>
+    <label>Correo electrónico<input id="mail" type="email" required placeholder="usuario@netservice.com"></label>
+    <label>Contraseña<div class="pw"><input id="p1" type="password" required minlength="6" placeholder="Mínimo 6 caracteres"><button type="button" class="ver">👁</button></div><div class="meter"><i id="med"></i></div><small id="medt"></small></label>
+    <label>Confirmar contraseña<input id="p2" type="password" required placeholder="Repite la contraseña"></label>
+    <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" required style="width:auto;margin:0"> Acepto los términos y condiciones</label>
+    <button class="btn full" style="margin-top:18px;padding:12px">Crear cuenta</button>
+    <p class="lnk">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+  </form></section>
+</div><div id="toast"></div><script src="js/auth.js"></script></body></html>

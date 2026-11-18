@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mi perfil - NetService Pro</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/sidebar.css">
+<link rel="stylesheet" href="css/emp-perfil.css">
+</head>
+<body data-page="emp-perfil" data-rol="empleado">
+<div class="layout">
+  <!-- MENÚ LATERAL (lo genera js/empleado.js) -->
+  <aside class="side" id="side"></aside>
+  <!-- CONTENIDO -->
+  <main class="content">
+    <!-- ENCABEZADO -->
+    <div class="tophead"><div><h1>Mi perfil</h1><small>Tu información y foto de empleado</small></div></div>
+    <section class="perfil">
+      <!-- FOTO -->
+      <div class="card foto-card"><div class="avatar" id="av"></div><b id="nm"></b><br><small id="cg"></small><br><br>
+        <label class="btn out sm" for="foto">Cambiar foto</label><input type="file" id="foto" accept="image/*"></div>
+      <!-- DATOS -->
+      <form class="card form-p" id="pf"><h3>Información personal</h3>
+        <div class="two"><label>Nombre completo<input id="f_nombre" required></label><label>Cargo<input id="f_cargo"></label></div>
+        <div class="two"><label>Teléfono<input id="f_tel" placeholder="300-000-0000"></label><label>Correo<input id="f_email" type="email"></label></div>
+        <label>Zona de trabajo<input id="f_zona" placeholder="Ej: Norte, Centro..."></label>
+        <label>Sobre mí<textarea id="f_bio" rows="4" placeholder="Experiencia, especialidades..."></textarea></label>
+        <div class="end"><button class="btn">Guardar perfil</button></div></form>
+    </section>
+  </main>
+</div>
+<!-- MODAL Y AVISO -->
+<div id="modal" class="modal"></div><div id="toast"></div>
+<script src="js/app.js"></script>
+<script src="js/empleado.js"></script>
+</body>
+</html>

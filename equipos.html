@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inventario de Equipos - NetService Pro</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="equipos" data-rol="admin">
+<!-- BARRA SUPERIOR (la genera js/app.js) -->
+<header id="topbar"></header>
+<!-- CONTENIDO PRINCIPAL -->
+<main class="wrap">
+<!-- ESTADÍSTICAS -->
+<section class="grid g4" id="stats"></section>
+<!-- FILTROS -->
+<div class="filters"><input id="q" placeholder="Buscar equipo, marca, serie..."><select id="ft"></select><select id="fe"></select><small id="cnt"></small></div>
+<!-- TABLA DE EQUIPOS -->
+<section class="card scroll" style="padding:0"><table class="tbl"><thead><tr><th>ID</th><th>Equipo</th><th>Tipo</th><th>Marca / Modelo</th><th>Ubicación</th><th>N° Serie</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="tbody"></tbody></table></section>
+</main>
+<!-- VENTANA MODAL (formularios) -->
+<div id="modal" class="modal"></div>
+<!-- AVISO EMERGENTE -->
+<div id="toast"></div>
+<script src="js/app.js"></script>
+</body>
+</html>

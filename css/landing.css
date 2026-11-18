@@ -1,0 +1,25 @@
+/* ===== PÁGINA DE BIENVENIDA ===== */
+html{scroll-behavior:smooth}
+/* Imagen referencial: si no existe el archivo en /img se ve el degradado */
+.ph{background:var(--img,none) center/cover,linear-gradient(135deg,#0284c7,#082f49);border-radius:14px;display:flex;align-items:flex-end;color:#ffffffaa;font-size:11px;padding:10px;min-height:120px}
+/* NAVEGACIÓN */
+.nav{position:sticky;top:0;z-index:5;background:#ffffffee;backdrop-filter:blur(6px);border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;padding:12px 6vw;gap:12px;flex-wrap:wrap}
+.nav .brand{font-weight:800;font-size:17px;color:var(--tx);margin-right:10px}
+.nav .links{display:flex;gap:20px}.nav .links a{color:var(--gr);font-weight:600;transition:.2s}.nav .links a:hover{color:var(--az)}
+/* HERO */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;padding:70px 6vw;background:radial-gradient(circle at 80% 0,#bae6fd,transparent 60%)}
+.hero h1{font-size:44px;line-height:1.1;margin-bottom:16px}.hero p{color:var(--gr);font-size:16px;margin-bottom:24px;max-width:520px}
+.hero .ph{min-height:340px}.hero .row{gap:12px}.hero .btn{padding:12px 22px}
+/* SECCIONES */
+.sec2{padding:64px 6vw}.sec2.alt{background:#fff}.sec2 h2{font-size:28px;margin-bottom:8px}.sec2>p{color:var(--gr);max-width:620px;margin-bottom:28px}
+.two-c{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.vals{display:grid;gap:12px;margin-top:18px}.vals div{background:#f0f9ff;border-left:4px solid var(--az);padding:12px 14px;border-radius:8px}
+/* SERVICIOS */
+.serv{padding:0;overflow:hidden}.serv .ph{border-radius:0;min-height:130px;font-size:10px}.serv div.t{padding:16px}
+.rv{opacity:0;transform:translateY(20px);transition:.6s}.rv.in{opacity:1;transform:none}
+/* PROCESO */
+.steps{counter-reset:s}.steps .card{position:relative;padding-top:34px}
+.steps .card::before{counter-increment:s;content:counter(s);position:absolute;top:-14px;left:18px;background:var(--az);color:#fff;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700}
+/* CONTACTO / PIE */
+.foot{background:#082f49;color:#cbd5e1;padding:40px 6vw;display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px}.foot h4{color:#fff;margin-bottom:8px}.foot a{color:#7dd3fc;display:block}
+@media(max-width:800px){.hero,.two-c,.foot{grid-template-columns:1fr}.hero h1{font-size:32px}.nav .links{display:none}}

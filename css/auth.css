@@ -1,0 +1,25 @@
+/* ===== REGISTRO Y RECUPERAR CONTRASEÑA ===== */
+.auth{display:grid;grid-template-columns:1fr 1.1fr;min-height:100vh;background:#fff}
+/* Panel izquierdo decorativo */
+.panel{background:radial-gradient(circle at 20% 0,#0e7490,#082f49 75%);color:#fff;padding:50px;display:flex;flex-direction:column;justify-content:center;gap:18px}
+.panel h2{font-size:32px;line-height:1.15}.panel p{color:#bae6fd}
+.panel li{list-style:none;background:#ffffff14;border-radius:10px;padding:12px 14px;margin-top:8px}
+/* Lado del formulario */
+.fside{display:grid;place-items:center;padding:30px}
+.fbox{width:min(420px,100%);animation:pop .4s}.fbox h1{font-size:26px;margin-bottom:4px}.fbox>small{display:block;margin-bottom:18px}
+.fbox label{display:block;font-weight:600;font-size:12px;margin-top:12px}.fbox label>*{margin-top:4px;font-weight:400}
+.fbox input{padding:11px 12px}
+.pw{position:relative}.pw button{position:absolute;right:8px;top:6px;border:0;background:none;cursor:pointer;font-size:16px}
+/* Selector de tipo de cuenta */
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+.roles div{border:2px solid var(--bd);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:.2s;font-weight:600}
+.roles div.on{border-color:var(--az);background:#f0f9ff;color:var(--az)}
+/* Medidor de contraseña */
+.meter{height:6px;background:#e2e8f0;border-radius:4px;margin-top:6px;overflow:hidden}.meter i{display:block;height:100%;width:0;transition:.3s;background:var(--er)}
+/* Pasos de recuperación */
+.dots{display:flex;gap:6px;margin-bottom:20px}.dots i{flex:1;height:5px;border-radius:3px;background:#e2e8f0;transition:.3s}.dots i.on{background:var(--az)}
+.code{display:flex;gap:8px;margin-top:10px}.code input{text-align:center;font-size:22px;font-weight:700;padding:12px 0}
+.paso{display:none}.paso.on{display:block;animation:pop .35s}
+.ok-big{text-align:center}.ok-big div{font-size:56px}
+.lnk{text-align:center;margin-top:16px;color:var(--gr)}
+@media(max-width:800px){.auth{grid-template-columns:1fr}.panel{display:none}}

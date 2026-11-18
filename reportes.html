@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard Administrador - NetService Pro</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="reportes" data-rol="admin">
+<!-- BARRA SUPERIOR (la genera js/app.js) -->
+<header id="topbar"></header>
+<!-- CONTENIDO PRINCIPAL -->
+<main class="wrap">
+<!-- ESTADÍSTICAS -->
+<section class="grid g6" id="stats"></section>
+<section class="cols">
+  <!-- LÍNEA: CITAS PROGRAMADAS VS COMPLETADAS -->
+  <div class="card"><h3>Citas Programadas vs Completadas</h3><p>Últimos 6 meses</p><svg id="linea" viewBox="0 0 400 150" width="100%"></svg></div>
+  <!-- DONA: EQUIPOS POR TIPO -->
+  <div class="card"><h3>Equipos por Tipo</h3><p>Distribución del inventario</p><div class="donut" id="donut"></div><div id="leg"></div></div>
+</section>
+<!-- BARRAS: ERRORES POR MES -->
+<section class="card"><h3>Resolución de Errores por Mes</h3><p>Errores resueltos vs sin resolver en citas completadas</p><div class="bars" id="bars"></div></section>
+</main>
+<!-- VENTANA MODAL (formularios) -->
+<div id="modal" class="modal"></div>
+<!-- AVISO EMERGENTE -->
+<div id="toast"></div>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+/* ===== CITAS DEL EMPLEADO ===== */
+/* Pestañas: Disponibles / Mis citas / Reportes */
+.pest{display:flex;gap:6px;border-bottom:1px solid var(--bd);margin-bottom:16px}
+.pest button{border:0;background:none;padding:10px 16px;font:inherit;font-weight:600;color:var(--gr);cursor:pointer;border-bottom:3px solid transparent;transition:.2s}
+.pest button.on{color:var(--az);border-color:var(--az)}
+/* Tarjeta de cita con borde según prioridad */
+.prio-3{border-left:5px solid var(--er)}.prio-2{border-left:5px solid var(--wa)}.prio-1{border-left:5px solid var(--az)}
+.nota{background:#f0f9ff;border:1px solid #bae6fd;color:#075985;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px}
+.vacio{text-align:center;color:var(--gr);padding:40px}
+/* Historial de reportes */
+.rep-res{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;font-size:12px}
+.rep-res div{background:#f8fafc;border-radius:6px;padding:6px 8px}

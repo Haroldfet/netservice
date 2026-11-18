@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inicio - NetService Pro</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/sidebar.css">
+<link rel="stylesheet" href="css/emp-citas.css">
+</head>
+<body data-page="empleado" data-rol="empleado">
+<div class="layout">
+  <!-- MENÚ LATERAL (lo genera js/empleado.js) -->
+  <aside class="side" id="side"></aside>
+  <!-- CONTENIDO -->
+  <main class="content">
+    <!-- ENCABEZADO -->
+    <div class="tophead"><div><h1 id="hola"></h1><small>Resumen de tu jornada</small></div></div>
+    <!-- ESTADÍSTICAS -->
+    <section class="grid g4" id="stats"></section>
+    <!-- CITAS RECOMENDADAS (mayor prioridad primero) -->
+    <h3 style="margin-bottom:10px">Citas recomendadas para ti</h3><section id="top"></section>
+    <a class="btn out" href="emp-citas.html">Ver todas las citas →</a>
+  </main>
+</div>
+<!-- MODAL Y AVISO -->
+<div id="modal" class="modal"></div><div id="toast"></div>
+<script src="js/app.js"></script>
+<script src="js/empleado.js"></script>
+</body>
+</html>

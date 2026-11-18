@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="css/styles.css"><link rel="stylesheet" href="css/auth.css"><title>Recuperar contraseña - NetService Pro</title></head>
+<body data-page="recuperar">
+<div class="auth">
+  <aside class="panel"><div class="logo">🔒</div><h2>¿Olvidaste tu contraseña?</h2><p>Sigue tres pasos sencillos y vuelve a entrar a tu cuenta.</p><a href="login.html" style="color:#7dd3fc">← Volver a iniciar sesión</a></aside>
+  <section class="fside"><div class="fbox">
+    <div class="dots"><i class="on"></i><i></i><i></i></div>
+    <!-- PASO 1: CORREO -->
+    <form class="paso on" id="s1"><h1>Recuperar acceso</h1><small>Escribe tu correo y te enviaremos un código</small>
+      <label>Correo electrónico<input id="rmail" type="email" required placeholder="usuario@netservice.com"></label><button class="btn full" style="margin-top:18px;padding:12px">Enviar código</button></form>
+    <!-- PASO 2: CÓDIGO -->
+    <form class="paso" id="s2"><h1>Revisa tu correo</h1><small id="sub2"></small>
+      <div class="code"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"></div>
+      <button class="btn full" style="margin-top:18px;padding:12px">Verificar código</button><p class="lnk"><a href="#" id="reenv">Reenviar código</a></p></form>
+    <!-- PASO 3: NUEVA CONTRASEÑA -->
+    <form class="paso" id="s3"><h1>Nueva contraseña</h1><small>Crea una contraseña que no hayas usado antes</small>
+      <label>Nueva contraseña<input id="n1" type="password" required minlength="6"></label><label>Confirmar contraseña<input id="n2" type="password" required></label><button class="btn full" style="margin-top:18px;padding:12px">Guardar contraseña</button></form>
+    <!-- PASO 4: ÉXITO -->
+    <div class="paso ok-big" id="s4"><div>✅</div><h1>¡Contraseña actualizada!</h1><small>Ya puedes iniciar sesión con tu nueva contraseña</small><a class="btn full" style="margin-top:18px;padding:12px" href="login.html">Ir a iniciar sesión</a></div>
+  </div></section>
+</div><div id="toast"></div><script src="js/auth.js"></script></body></html>

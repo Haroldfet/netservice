@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Panel Admin - NetService Pro</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="admin" data-rol="admin">
+<!-- BARRA SUPERIOR (la genera js/app.js) -->
+<header id="topbar"></header>
+<!-- CONTENIDO PRINCIPAL -->
+<main class="wrap">
+<h1 id="hola"></h1><p style="color:var(--gr);margin-bottom:20px">Panel de administración — gestiona equipos, técnicos y citas de mantenimiento</p>
+<!-- TARJETAS DE ACCESO -->
+<section class="grid g2">
+  <div class="card hov"><div class="icon s-az">📦</div><h3>Inventario de Equipos</h3><p>Gestiona routers, módems, switches y demás infraestructura de red</p><a class="btn full" href="equipos.html">Acceder</a></div>
+  <div class="card hov"><div class="icon s-mo">📅</div><h3>Citas de Mantenimiento</h3><p>Programa y supervisa visitas técnicas con asignación de técnico</p><a class="btn full" href="citas-admin.html">Acceder</a></div>
+  <div class="card hov"><div class="icon s-az">🎫</div><h3>Panel de Citas</h3><p>Vista global de todas las citas y su estado de resolución</p><a class="btn full" href="panel-citas.html">Acceder</a></div>
+  <div class="card hov"><div class="icon s-ok">📊</div><h3>Reportes y Estadísticas</h3><p>Métricas de rendimiento, resolución y equipos</p><a class="btn full" href="reportes.html">Acceder</a></div>
+</section>
+<!-- RESUMEN DEL SISTEMA -->
+<section class="card"><h3>Resumen del Sistema</h3><div class="grid g4" id="stats" style="margin:12px 0 0"></div></section>
+</main>
+<!-- VENTANA MODAL (formularios) -->
+<div id="modal" class="modal"></div>
+<!-- AVISO EMERGENTE -->
+<div id="toast"></div>
+<script src="js/app.js"></script>
+</body>
+</html>
