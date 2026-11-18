@@ -17,10 +17,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+$dbDsn = getenv('DB_DSN');
+$dbUser = getenv('DB_USER');
+$dbPassword = getenv('DB_PASSWORD');
+if ($dbDsn === false) {
+    $dbDsn = 'mysql:host=localhost;port=3306;dbname=netservice_pro;charset=utf8mb4';
+    $dbUser = 'root';
+    $dbPassword = '';
+}
 $db = new PDO(
-    'mysql:host=localhost;port=3306;dbname=netservice_pro;charset=utf8mb4',
-    'root',
-    '',
+    $dbDsn,
+    $dbUser,
+    $dbPassword,
     [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]
 );
 
@@ -85,7 +93,10 @@ function appointments(PDO $db): array {
     $user = currentUser($db);
     if (!$user) respond(['error' => 'Sesión requerida'], 401);
     $where = $user['rol'] === 'cliente' ? ' WHERE c.cliente_id = ' . (int) $user['id'] : '';
-    $sql = 'SELECT c.id, c.codigo, c.tipo, c.fecha, TIME_FORMAT(c.hora, "%H:%i") hora,
+    $horaSql = $db->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql'
+        ? 'to_char(c.hora, \'HH24:MI\')'
+        : 'TIME_FORMAT(c.hora, "%H:%i")';
+    $sql = 'SELECT c.id, c.codigo, c.tipo, c.fecha, ' . $horaSql . ' hora,
                    c.estado, c.resuelto, c.descripcion descripcion_texto, c.cliente_id, c.creada_en,
                    cli.nombre cliente, e.nombre equipo, t.nombre tecnico,
                    emp.nombre empleado,
@@ -105,7 +116,8 @@ function appointments(PDO $db): array {
         $c['desc'] = $c['descripcion_texto'];
         $c['creada'] = isset($c['creada_en']) ? substr($c['creada_en'], 0, 10) : null;
         $c['u'] = userId($db) !== null && (int) $c['cliente_id'] === userId($db);
-        $c['resuelto'] = $c['resuelto'] === null ? null : (bool) $c['resuelto'];
+        $c['resuelto'] = $c['resuelto'] === null ? null :
+            (is_bool($c['resuelto']) ? $c['resuelto'] : in_array(strtolower((string) $c['resuelto']), ['1', 't', 'true', 'sí'], true));
         if ($c['reporte_fecha'] !== null) {
             $c['reporte'] = [
                 'materiales' => $c['materiales'], 'gasto' => (float) $c['gasto'],
@@ -146,7 +158,7 @@ function findEquipment(PDO $db, string $name): int {
 }
 
 function findClient(PDO $db, string $name, int $fallback): int {
-    $stmt = $db->prepare('SELECT id FROM usuarios WHERE nombre = ? AND rol = "cliente" LIMIT 1');
+    $stmt = $db->prepare("SELECT id FROM usuarios WHERE nombre = ? AND rol = 'cliente' LIMIT 1");
     $stmt->execute([$name]);
     return (int) ($stmt->fetchColumn() ?: $fallback);
 }
@@ -170,18 +182,30 @@ try {
             if ($_SERVER['REQUEST_METHOD'] === 'GET') respond(currentProfile($db));
             $id = userId($db);
             if (!$id) respond(['error' => 'Sesión requerida'], 401);
-            $stmt = $db->prepare('INSERT INTO perfiles_empleado (usuario_id,cargo,telefono,email,zona,biografia,foto)
-                VALUES (?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE cargo=VALUES(cargo), telefono=VALUES(telefono),
-                email=VALUES(email), zona=VALUES(zona), biografia=VALUES(biografia), foto=VALUES(foto)');
+            $profileSql = $db->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql'
+                ? 'INSERT INTO perfiles_empleado (usuario_id,cargo,telefono,email,zona,biografia,foto)
+                   VALUES (?,?,?,?,?,?,?) ON CONFLICT (usuario_id) DO UPDATE SET
+                   cargo=EXCLUDED.cargo, telefono=EXCLUDED.telefono, email=EXCLUDED.email,
+                   zona=EXCLUDED.zona, biografia=EXCLUDED.biografia, foto=EXCLUDED.foto'
+                : 'INSERT INTO perfiles_empleado (usuario_id,cargo,telefono,email,zona,biografia,foto)
+                   VALUES (?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE cargo=VALUES(cargo), telefono=VALUES(telefono),
+                   email=VALUES(email), zona=VALUES(zona), biografia=VALUES(biografia), foto=VALUES(foto)';
+            $stmt = $db->prepare($profileSql);
             $stmt->execute([$id, $input['cargo'] ?? '', $input['tel'] ?? '', $input['email'] ?? '',
                 $input['zona'] ?? '', $input['bio'] ?? '', $input['foto'] ?? null]);
             respond(['ok' => true]);
         case 'equipment_create':
             requireRole($db, ['admin']);
-            $stmt = $db->prepare('INSERT INTO equipos (nombre,tipo,marca,modelo,ubicacion,serie,estado) VALUES (?,?,?,?,?,?,?)');
+            $equipmentInsert = $db->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql'
+                ? 'INSERT INTO equipos (nombre,tipo,marca,modelo,ubicacion,serie,estado) VALUES (?,?,?,?,?,?,?) RETURNING id'
+                : 'INSERT INTO equipos (nombre,tipo,marca,modelo,ubicacion,serie,estado) VALUES (?,?,?,?,?,?,?)';
+            $stmt = $db->prepare($equipmentInsert);
             $stmt->execute([$input['nombre'], $input['tipo'], $input['marca'] ?? '', $input['modelo'] ?? '',
                 $input['ubicacion'] ?? '', $input['serie'] ?? '', $input['estado']]);
-            respond(['ok' => true, 'id' => (int) $db->lastInsertId()]);
+            $newId = $db->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql'
+                ? (int) $stmt->fetchColumn()
+                : (int) $db->lastInsertId();
+            respond(['ok' => true, 'id' => $newId]);
         case 'equipment_update':
             requireRole($db, ['admin']);
             $stmt = $db->prepare('UPDATE equipos SET nombre=?,tipo=?,marca=?,modelo=?,ubicacion=?,serie=?,estado=? WHERE id=?');
@@ -194,7 +218,9 @@ try {
             try {
                 $stmt->execute([(int) $input['id']]);
             } catch (PDOException $e) {
-                if ((int) $e->errorInfo[1] === 1451) respond(['error' => 'No se puede eliminar un equipo con citas asociadas'], 409);
+                if ((int) $e->errorInfo[1] === 1451 || $e->getCode() === '23503') {
+                    respond(['error' => 'No se puede eliminar un equipo con citas asociadas'], 409);
+                }
                 throw $e;
             }
             respond(['ok' => true]);
@@ -228,22 +254,30 @@ try {
             respond(['ok' => true]);
         case 'appointment_claim':
             $user = requireRole($db, ['empleado']);
-            $stmt = $db->prepare('UPDATE citas SET empleado_id=?, tecnico_id=(SELECT id FROM tecnicos WHERE usuario_id=?), estado="En progreso"
-                                  WHERE codigo=? AND empleado_id IS NULL AND estado IN ("Pendiente","Programada")');
+            $stmt = $db->prepare("UPDATE citas SET empleado_id=?, tecnico_id=(SELECT id FROM tecnicos WHERE usuario_id=?), estado='En progreso'
+                                  WHERE codigo=? AND empleado_id IS NULL AND estado IN ('Pendiente','Programada')");
             $stmt->execute([(int) $user['id'], (int) $user['id'], $input['id']]);
             if ($stmt->rowCount() !== 1) respond(['error' => 'La cita ya fue tomada o no está disponible'], 409);
             respond(['ok' => true]);
         case 'report_create':
             $user = requireRole($db, ['empleado']);
-            $stmt = $db->prepare('SELECT id FROM citas WHERE codigo=? AND empleado_id=? AND estado="En progreso"');
+            $stmt = $db->prepare("SELECT id FROM citas WHERE codigo=? AND empleado_id=? AND estado='En progreso'");
             $stmt->execute([$input['id'], (int) $user['id']]);
             $appointmentId = $stmt->fetchColumn();
             if (!$appointmentId) respond(['error' => 'La cita no está asignada a este empleado'], 403);
-            $stmt = $db->prepare('INSERT INTO reportes
-                (cita_id,empleado_id,materiales,gasto,horas,detalle,resuelto,fecha)
-                SELECT ?,?,?,?,?,?,?,? FROM DUAL
-                ON DUPLICATE KEY UPDATE materiales=VALUES(materiales),gasto=VALUES(gasto),
-                horas=VALUES(horas),detalle=VALUES(detalle),resuelto=VALUES(resuelto),fecha=VALUES(fecha)');
+            $reportSql = $db->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql'
+                ? 'INSERT INTO reportes
+                   (cita_id,empleado_id,materiales,gasto,horas,detalle,resuelto,fecha)
+                   VALUES (?,?,?,?,?,?,?,?)
+                   ON CONFLICT (cita_id) DO UPDATE SET
+                   materiales=EXCLUDED.materiales, gasto=EXCLUDED.gasto, horas=EXCLUDED.horas,
+                   detalle=EXCLUDED.detalle, resuelto=EXCLUDED.resuelto, fecha=EXCLUDED.fecha'
+                : 'INSERT INTO reportes
+                   (cita_id,empleado_id,materiales,gasto,horas,detalle,resuelto,fecha)
+                   SELECT ?,?,?,?,?,?,?,? FROM DUAL
+                   ON DUPLICATE KEY UPDATE materiales=VALUES(materiales),gasto=VALUES(gasto),
+                   horas=VALUES(horas),detalle=VALUES(detalle),resuelto=VALUES(resuelto),fecha=VALUES(fecha)';
+            $stmt = $db->prepare($reportSql);
             $stmt->execute([(int) $appointmentId, (int) $user['id'], $input['materiales'],
                 (float) $input['gasto'], (float) $input['horas'], $input['detalle'],
                 $input['resuelto'], date('Y-m-d')]);
@@ -257,7 +291,9 @@ try {
             try {
                 $stmt->execute([$input['nombre'], $input['email'], password_hash($input['pass'], PASSWORD_DEFAULT), $input['rol']]);
             } catch (PDOException $e) {
-                if ((int) $e->errorInfo[1] === 1062) respond(['error' => 'Ese correo ya está registrado'], 409);
+                if ((int) $e->errorInfo[1] === 1062 || $e->getCode() === '23505') {
+                    respond(['error' => 'Ese correo ya está registrado'], 409);
+                }
                 throw $e;
             }
             respond(['ok' => true]);

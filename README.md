@@ -67,3 +67,31 @@ La sesión de autenticación se mantiene mediante una cookie de PHP.
 - `img/`: imágenes de la página principal.
 
 Los entornos virtuales y logs locales están excluidos mediante `.gitignore`.
+
+## Conectar a Supabase
+
+Supabase usa PostgreSQL. Para crear las tablas y los datos iniciales:
+
+1. Abrir el SQL Editor del proyecto de Supabase.
+2. Pegar y ejecutar el contenido de [`supabase_schema.sql`](supabase_schema.sql).
+3. Ir a `Project Settings -> Database -> Connection string`.
+4. Usar el modo PHP/PDO con una cadena PostgreSQL similar a:
+
+   ```text
+   pgsql:host=TU-HOST.supabase.com;port=5432;dbname=postgres;sslmode=require
+   ```
+
+5. Configurar las variables de entorno sin guardar secretos en el repositorio:
+
+   ```powershell
+   $env:DB_DSN = "pgsql:host=TU-HOST.supabase.com;port=5432;dbname=postgres;sslmode=require"
+   $env:DB_USER = "postgres"
+   $env:DB_PASSWORD = "TU-CONTRASEÑA"
+   php -S localhost:8000
+   ```
+
+6. Reiniciar el servidor PHP después de cambiar las variables.
+
+No publiques la contraseña de la base de datos ni las claves `service_role` o
+`secret`. Para el despliegue en hosting, configura esas variables en el panel
+del proveedor.
