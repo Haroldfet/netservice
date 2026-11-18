@@ -17,21 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-$dbDsn = getenv('DB_DSN');
-$dbUser = getenv('DB_USER');
-$dbPassword = getenv('DB_PASSWORD');
-if ($dbDsn === false) {
-    $dbDsn = 'mysql:host=localhost;port=3306;dbname=netservice_pro;charset=utf8mb4';
-    $dbUser = 'root';
-    $dbPassword = '';
-}
-$db = new PDO(
-    $dbDsn,
-    $dbUser,
-    $dbPassword,
-    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]
-);
-
 function body(): array {
     $raw = file_get_contents('php://input');
     $raw = preg_replace('/^\xEF\xBB\xBF/', '', $raw);
@@ -51,6 +36,27 @@ function respond($data, int $status = 200): never {
     http_response_code($status);
     echo json_encode($data, JSON_UNESCAPED_UNICODE);
     exit;
+}
+
+$dbDsn = getenv('DB_DSN');
+$dbUser = getenv('DB_USER');
+$dbPassword = getenv('DB_PASSWORD');
+
+if ($dbDsn === false) {
+    $dbDsn = 'mysql:host=localhost;port=3306;dbname=netservice_pro;charset=utf8mb4';
+    $dbUser = 'root';
+    $dbPassword = '';
+}
+
+try {
+    $db = new PDO(
+        $dbDsn,
+        $dbUser,
+        $dbPassword,
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]
+    );
+} catch (PDOException $e) {
+    respond(['error' => 'No se pudo conectar a la base de datos'], 500);
 }
 
 function currentUser(PDO $db): ?array {

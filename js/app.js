@@ -3,7 +3,7 @@
    1) DATOS  2) FUNCIONES COMUNES  3) PÁGINAS
    ===================================================== */
 
-const API_URL = "http://localhost:8000/api.php";
+const API_URL = "/api.php";
 function apiRequest(action, method = "GET", data = null) {
   const xhr = new XMLHttpRequest();
   xhr.open(method, `${API_URL}?action=${action}`, false);

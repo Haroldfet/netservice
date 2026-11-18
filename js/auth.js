@@ -1,7 +1,7 @@
 /* Registro y recuperación de contraseña */
 const $=s=>document.querySelector(s), page=document.body.dataset.page;
 const toast=t=>{const e=$("#toast");e.textContent=t;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),2600)};
-const API_URL = "http://localhost:8000/api.php";
+const API_URL = "/api.php";
 const apiRequest = (action, data) => {
   const xhr = new XMLHttpRequest();
   xhr.open("POST", `${API_URL}?action=${action}`, false);
