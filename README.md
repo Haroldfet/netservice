@@ -95,3 +95,18 @@ Supabase usa PostgreSQL. Para crear las tablas y los datos iniciales:
 No publiques la contraseña de la base de datos ni las claves `service_role` o
 `secret`. Para el despliegue en hosting, configura esas variables en el panel
 del proveedor.
+
+## Desplegar en Render
+
+El proyecto incluye un `Dockerfile` compatible con Render.
+
+En el panel de Render, configura estas variables de entorno:
+
+```text
+DB_DSN=pgsql:host=aws-1-us-west-2.pooler.supabase.com;port=5432;dbname=postgres;sslmode=require
+DB_USER=postgres.basezdghbuozlqlcqjey
+DB_PASSWORD=<contraseña-nueva-de-Supabase>
+```
+
+No incluyas `DB_PASSWORD` en el código ni en `render.yaml`. La contraseña debe
+configurarse como variable secreta desde el panel de Render.

@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: netservice
+    runtime: docker
+    plan: free
+    healthCheckPath: /index.html
+    envVars:
+      - key: DB_DSN
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
